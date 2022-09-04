@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .box {
+            width: 300px;
+            height: 600px;
+        }
+
+        @font-face {
+            font-family: asd;
+            src: url("font/123.ttf");
+        }
+
+        @font-face {
+            font-family: abc;
+            src: url("font/321.ttf");
+        }
+
+    </style>
+</head>
+<body style="background-color: rgb(218,185,149)">
+<button onclick="savaData()"
+        style="position: absolute;border: none; margin-bottom:5px;padding:5px 5px 5px 5px;font-weight:550;background-color: transparent;margin-left:1200px; font-size: 40px;"
+        class="save-img">保存图片
+</button>
+<div class="box">
+    <div style="display: flex;position:relative;">
+
+        <div style="position: absolute;width: 1125px;text-align: center;margin-top:550px;">
+            <div contenteditable class="text7k7k"
+                 style="font-family: abc;display: inline-block;color: rgb(1,1,1);font-size: 89px">100.00
+            </div>
+        </div>
+
+        <div class="ls" style="position: absolute;width: 1125px;text-align: center; top:365px; color: rgb(235,83,70);">
+            <div contenteditable class="text3446" style="font-family: asd;display: inline-block;font-size: 94px;">
+                100.00
+            </div>
+        </div>
+
+    </div>
+
+    <div style="position: absolute;left: 1150px;top: 20px;width: 1100px;height: 2000px;">
+
+
+        <div style="display: inline-block; position: absolute;right: 700px;top: 150px; font-size: 50px;">
+            <div contenteditable class="text60000"
+                 style="white-space: nowrap;overflow: hidden;display: inline-block;position: absolute;height: 100px;line-height: 100px; font-size: 50px;width: 800px;background-color: #FFFFFF;">
+                100.00
+            </div>
+        </div>
+
+        <div style="display: inline-block; position: absolute;right: 700px;top: 300px; font-size: 50px;">
+            <div contenteditable class="text60032"
+                 style="white-space: nowrap;overflow: hidden;display: inline-block;position: absolute;height: 100px;line-height: 100px; font-size: 50px;width: 800px;background-color: #FFFFFF;">
+                100.00
+            </div>
+        </div>
+    </div>
+
+
+        <!-- 引入 html2canvas -->
+        <script src="html2canvas.js"></script>
+        <!-- 引入自行封装的截图插件 -->
+        <script src="screen-shot.js"></script>
+
+
+        <script>
+
+            // 获取组件盒子
+            let box = document.querySelector('.box')
+
+            // 获取保存按钮
+            let saveImg = document.querySelector('.save-img')
+
+            // 点击保存按钮
+            saveImg.addEventListener('click', () => {
+                saveImgFn('图片')
+            })
+
+            // 保存图片的方法
+            async function saveImgFn(downloadName) {
+                // 获取需要转换的dom
+                // html2canvas(document.querySelector('.bbx'))
+                //     .then(canvas => {
+                //         let imgUrl = canvas.toDataURL('image/jpg')
+                //         let image = document.createElement('img')
+                //         image.src = imgUrl
+                //         let a = document.createElement('a')
+                //         a.href = imgUrl
+                //         a.download = name // 自定义名称
+                //         a.click()
+                //     })
+
+                // 截图模块
+                let canvasBox = document.querySelector('.box')
+                // 使用自定义方法进行转换
+                await getHtmlImage({canvasBox, downloadName})
+
+            }
+
+        </script>
+
+
+        <script>
+
+            let text1 = document.querySelector(".text3446")
+            let text2 = document.querySelector(".text60000")
+
+            twoWayBinding(text1, text2)
+            twoWayBinding(text2, text1)
+
+            function twoWayBinding(ele1, ele2) {
+                ele1.addEventListener('input', () => {
+                    ele2.innerText = ele1.innerText
+                })
+            }
+
+        </script>
+
+        <script>
+
+            let text27 = document.querySelector(".text60032")
+            let text28 = document.querySelector(".text7k7k")
+
+            formatAddComma(text27, text28)
+
+            // 添加逗号 - 转格式
+            function formatAddComma(ele1, ele2) {
+                ele1.addEventListener('input', () => {
+                    const addCommas = (num) => num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+                    ele2.innerText = addCommas(ele1.innerText)
+                })
+            }
+
+        </script>
+
+
+        <script>
+            // 需要保存数据的元素
+            let text3446 = document.querySelector('.text3446')
+
+
+            let text60000 = document.querySelector('.text60000')
+
+
+            getData()
+
+            // 页面初始化获取文字
+            function getData() {
+                let localText3446 = localStorage.getItem('text3446')
+
+
+                let localText60000 = localStorage.getItem('text60000')
+
+
+                if (localText3446) text3446.innerText = localText3446
+
+
+                if (localText60000) text60000.innerText = localText60000
+
+            }
+
+
+            // 保存数据的方法
+            function savaData() {
+                localStorage.setItem('text3446', text3446.innerText)
+
+
+                localStorage.setItem('text60000', text60000.innerText)
+
+
+            }
+
+        </script>
+
+    </body>
+</html>
